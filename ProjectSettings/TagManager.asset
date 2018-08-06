@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - SliceVector
+  - New tag
+  - Players
+  - line
+  - lineTop
+  - lineBottom
+  - greenSpike
+  - startBar
+  - bottomMenu
+  - PlayerButtons
+  - GlassButtons
+  - HatButtons
+  - glass
+  - hat
+  - slider
+  - Enemy
+  - shield
+  - shieldPowerUp
+  - lifePowerUp
+  - autoPilotPowerUp
+  - PickableObjects
+  - magnetPowerUp
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - ControllerTypes
+  - UnvisibleTerrain
+  - PickableObjects
+  - Player
+  - CameraBlocker
+  - PlayerInteracted
+  - Glowed
+  - Attacker
+  - Crystal
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 504183629
+    locked: 0
+  - name: Lines
+    uniqueID: 1939659939
+    locked: 0

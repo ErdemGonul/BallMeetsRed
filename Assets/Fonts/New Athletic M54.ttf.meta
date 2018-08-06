@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: a6e596091be3ae84aa1fba904dd7b3ef
+timeCreated: 1531550661
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: New Athletic M54
+  fontNames:
+  - New Athletic M54
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

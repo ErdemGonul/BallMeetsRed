@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 6f7886b3549e4b645ad7ce71deb34946
+timeCreated: 1531095837
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: JLS Data GothicC
+  fontNames:
+  - JLS Data GothicC
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

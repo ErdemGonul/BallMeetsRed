@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: b5037ad8c7e450a4ebd9c1f576a0b26f
+timeCreated: 1531095770
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Checkbook
+  fontNames:
+  - Checkbook
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

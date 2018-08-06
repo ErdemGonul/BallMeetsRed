@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: ad5f82680fc52f74089a120388e3dd19
+timeCreated: 1531550626
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Jersey M54
+  fontNames:
+  - Jersey M54
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
