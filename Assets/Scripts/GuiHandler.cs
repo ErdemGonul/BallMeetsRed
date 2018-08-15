@@ -13,7 +13,7 @@ public class GuiHandler : MonoBehaviour
     public Button playButtonMenu;
     public Button restartButtonMenu;
     public GameController controller;
-
+    public GameObject startPanel;
     public Button openButton;
     public GameObject scrollMenu;
 
@@ -27,12 +27,18 @@ public class GuiHandler : MonoBehaviour
     public bool opened = true;
     public GameObject powerUpPanel;
     public GameObject powerUpButton;
+    public GameObject tutPanel;
     // Use this for initialization
     void Start()
     {
         openPowerUpMenu();
-
-
+        //PlayerPrefs.DeleteAll();
+        if (PlayerPrefs.GetInt("playedTime") == 0)
+        {
+            startPanel.SetActive(false);
+            bottomMenu.SetActive(false);
+            tutPanel.SetActive(true);
+        }
     }
     private bool IsPointerOverUIObject()
     {
@@ -45,8 +51,10 @@ public class GuiHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if(Input.GetMouseButtonUp(0) &&!IsPointerOverUIObject() && gameStarted==false)
+       if(Input.GetMouseButtonDown(0) &&!IsPointerOverUIObject() && gameStarted==false)
         {
+
+
             StartGame();
 
         }
@@ -59,6 +67,12 @@ public class GuiHandler : MonoBehaviour
         powerUpButton.SetActive(true);
 
         gameStarted = true;
+    }
+    public void closeTut()
+    {
+        startPanel.SetActive(true);
+        bottomMenu.SetActive(true);
+        tutPanel.SetActive(false);
     }
     public void loadGame(int index)
     {

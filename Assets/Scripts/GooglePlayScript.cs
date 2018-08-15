@@ -12,6 +12,8 @@ public class GooglePlayScript : MonoBehaviour {
     public GameObject text;
     public static GooglePlayScript instance;
     private BannerView banner;
+    public GameObject notifyPanel;
+    public GameObject startPanel;
     // Use this for initialization
     private void Awake()
     {
@@ -44,14 +46,18 @@ public class GooglePlayScript : MonoBehaviour {
         {
             if (success)
             {
-                Debug.Log("loggednnnn");
+                notifyPanel.SetActive(false);
+                GooglePlayScript.ShowLeaderBoardUI();
+                Debug.Log("bak bu giriş");
             }
             else
             {
-                Debug.Log("codulnt");
+                notifyPanel.SetActive(false);
             }
+ 
         }
             );
+       
     }
 	// Update is called once per frame
 	void Update () {
@@ -59,16 +65,21 @@ public class GooglePlayScript : MonoBehaviour {
 	}
     #region     LeaderBoards
 
-    public static void AddScoreToLeaderBoard(string leaderboardID,int score)
+    public static void AddScoreToLeaderBoard(string leaderboardID)
     {
-        Social.ReportScore(score, leaderboardID,success => { });
+        if(Social.localUser.authenticated)
+        Social.ReportScore(PlayerPrefs.GetInt("best"), leaderboardID,success => { });
+        else
+        {
+
+        }
     }
     public void connectIt()
     {
         if ( (Application.internetReachability == NetworkReachability.ReachableViaCarrierDataNetwork || Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork))
         {
            
-            Debug.Log("bak bu giriş");
+           
             PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder().Build();
             PlayGamesPlatform.InitializeInstance(config);
 
@@ -83,6 +94,10 @@ public class GooglePlayScript : MonoBehaviour {
             MakeInstance();
 
         }
+        else
+        {
+
+        }
 
     }
     public static void ShowLeaderBoardUI()
@@ -91,6 +106,6 @@ public class GooglePlayScript : MonoBehaviour {
        
         PlayGamesPlatform.Instance.ShowLeaderboardUI(GPGSIds.leaderboard_leaderboard);
     }
-
+   
     #endregion
 }

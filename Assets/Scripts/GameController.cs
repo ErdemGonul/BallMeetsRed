@@ -53,10 +53,13 @@ public class GameController : MonoBehaviour {
     public GameObject bottomMenu;
 
     public GameObject DeathText;
-    BannerView banner;
     InterstitialAd interstitial;
     public GameObject reviewPanel;
+    public GameObject ingamestartpanel;
+    public GameObject playservicenotifyPanel;
     public GameObject brakeButton;
+    public RewardBasedVideoAd rewardBasedVideo;
+
     // Use this for initialization
     private void Awake()
     {
@@ -73,6 +76,7 @@ public class GameController : MonoBehaviour {
         {
 
             reviewPanel.SetActive(true);
+            ingamestartpanel.SetActive(false);
         }
         if(PlayerPrefs.GetInt("adTime")%3==0){
             AdmobScript.instance.adGive();
@@ -87,9 +91,16 @@ public class GameController : MonoBehaviour {
         metre = ball.transform.position.x;
       
     }
+
+    public void closeWindow()
+    {
+        playservicenotifyPanel.SetActive(false);
+        
+    }
     public void closeReview()
     {
         reviewPanel.SetActive(false);
+        ingamestartpanel.SetActive(true);
     }
     public void makeReview()
     {
@@ -104,7 +115,10 @@ public class GameController : MonoBehaviour {
             increaseMeter();
             metre = ball.transform.position.x;
         }
-	}
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
+    }
     public GameObject notificationTire()
     {
         notificationText.SetActive(true);
@@ -172,7 +186,7 @@ public class GameController : MonoBehaviour {
         Vector3 obj1 = col1.points[thatPos];
         EdgeCollider2D col2 = lineSetupTop.lineArray[indexOfArray].GetComponent<EdgeCollider2D>();
         Vector3 obj2 = col2.points[ thatPos];
-        Vector3 pos = new Vector3(obj1.x, Random.Range(obj1.y, obj2.y), 0f);
+        Vector3 pos = new Vector3(obj1.x, Random.Range(obj1.y+0.5f, obj2.y-0.5f), 0f);
         Instantiate(crystalPrefab, pos, Quaternion.identity);
     }
     public void spawnRedSpike(int indexOfArray)
@@ -222,8 +236,8 @@ public class GameController : MonoBehaviour {
 
         
         Time.timeScale = 1;
-        if (banner != null)
-            banner.Destroy();
+   
+
 
         PlayerPrefs.SetInt("playedTime", PlayerPrefs.GetInt("playedTime") + 1);
         SceneManager.LoadScene(0);
@@ -234,13 +248,13 @@ public class GameController : MonoBehaviour {
     {
 
         lastChanceUI.SetActive(true);
-      co=  StartCoroutine(SliderDecrease());
+        co=  StartCoroutine(SliderDecrease());
     }
     public void chanceGone()
     {
         PlayerPrefs.SetInt("adTime", PlayerPrefs.GetInt("adTime") + 1);
         int cause=PlayerPrefs.GetInt("deathCause");
-        banner=AdmobScript.RequestBanner();
+       
         if(co!=null)
         StopCoroutine(co);
         switch (cause)
@@ -266,6 +280,7 @@ public class GameController : MonoBehaviour {
         totalCoin();
         
     }
+   
 
     public void lost()
     {
@@ -290,7 +305,7 @@ public class GameController : MonoBehaviour {
         if (GameObject.Find("LosingText") != null)
         {
            Text losingtext = GameObject.Find("LosingText").GetComponent<Text>();
-            int c = 5;
+            int c = 3;
             while (true)
             {
                 losingtext.text="Last Chance Missing In "+c+"";
@@ -311,16 +326,23 @@ public class GameController : MonoBehaviour {
     }
     public void showLeaderBoards()
     {
-      
 
-        GooglePlayScript.ShowLeaderBoardUI();
+        if (Social.localUser.authenticated)
+        {
+            GooglePlayScript.AddScoreToLeaderBoard(GPGSIds.leaderboard_leaderboard);
+            GooglePlayScript.ShowLeaderBoardUI();
+
+        }
+        else{
+            playservicenotifyPanel.SetActive(true);
+        }
     }
    
     public void recordBest()
     {
         if (PlayerPrefs.GetInt("best") <= meter) {
             PlayerPrefs.SetInt("best", meter);
-            GooglePlayScript.AddScoreToLeaderBoard(GPGSIds.leaderboard_leaderboard,PlayerPrefs.GetInt("best"));
+            GooglePlayScript.AddScoreToLeaderBoard(GPGSIds.leaderboard_leaderboard);
                 }
     }
     public void defaultSettings()
@@ -366,6 +388,7 @@ public class GameController : MonoBehaviour {
     }
     public void shieldTime()
     {
+       
         if (!Player.findChildTechnique(player, "shield").activeInHierarchy && gameContinue)
         {
             
@@ -440,18 +463,33 @@ public class GameController : MonoBehaviour {
     }
     public void turnBackToLife()
     {
+        destroyOnRespawn();
         PlayerPrefs.SetInt("lifePowerUpCount", PlayerPrefs.GetInt("lifePowerUpCount") - 1);
         updateStocks();
         StopCoroutine(co);
         lastChanceUI.SetActive(false);
-        Vector3 pos = Camera.main.transform.position- new Vector3(2f,0,0);
+        Vector3 pos = Camera.main.transform.position;
         pos.z = 0;
         ball=Instantiate(playerPrefab, pos, Quaternion.identity);
+        player = ball;
         noTouchFirst();
         
         gameContinue = true;
         CancelInvoke();
        
+    }
+    public void destroyOnRespawn()
+    {
+        GameObject[] enemyArray = GameObject.FindGameObjectsWithTag("Enemy");
+        float deathPos = Camera.main.transform.position.x + 30f;
+        foreach (GameObject enemy in enemyArray)
+        {
+            if (enemy.transform.position.x < deathPos)
+            {
+                Destroy(enemy);
+
+            }
+        }
     }
     public void noTouchFirst()
     {

@@ -26,6 +26,8 @@ TagManager:
   - autoPilotPowerUp
   - PickableObjects
   - magnetPowerUp
+  - mat
+  - ticked
   layers:
   - Default
   - TransparentFX

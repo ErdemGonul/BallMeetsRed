@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     public Material playerColorMaterial;
     public bool justOneCourotine = false;
     public GameObject notificationText;
-    float moveSpeed=15f;
+
     public Vector3 firstPos;
     public bool isBrake = false;
     public float limitSpeed=5;
@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !IsPointerOverUIObject() && handler.gameStarted == true)
         {
            
-            rigidOfPlayer.AddForce(new Vector2(0, 4f), ForceMode2D.Impulse);
+            rigidOfPlayer.AddForce(new Vector2(0, 5f), ForceMode2D.Impulse);
         }
         if ( handler.gameStarted == true)
         {
@@ -94,6 +94,7 @@ public class Player : MonoBehaviour
 
     public  static GameObject findChildTechnique(GameObject ballType, string tag)
     {
+        Debug.Log("buraya girdi");
         foreach (Transform child in ballType.transform)
         {
             if (child.tag == tag)

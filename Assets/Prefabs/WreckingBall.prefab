@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 58405978746881002}
   m_Layer: 0
   m_Name: WreckingBall
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -221,7 +221,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c164514b5fe26a14d91fad662ffdc795, type: 3}
-  m_Color: {r: 0.9339623, g: 0.23349057, b: 0.3310495, a: 1}
+  m_Color: {r: 1, g: 0.23921569, b: 0.52156866, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

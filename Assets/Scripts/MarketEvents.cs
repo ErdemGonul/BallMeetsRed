@@ -25,9 +25,9 @@ public class MarketEvents : MonoBehaviour {
     public GameObject lifePriceText;
     public GameObject shieldPriceText;
     public GameObject magnetPriceText;
-  
-    
-    
+
+    public GameObject contentSlider;
+    public GameObject playservicenotifyPanel;
     public int shieldPrice, lifePrice, magnetPrice, ballColorPrice;
     public void savePrices()
     {
@@ -53,12 +53,15 @@ public class MarketEvents : MonoBehaviour {
         
         ballShow = GameObject.Find("BallShow");
         x = readDataFromFile();
+        has = readItemsFromFile();
         playerColorMaterial = Resources.Load<Material>("PlayerMaterials/" + x.color);
         ballShow.GetComponent<SpriteRenderer>().sharedMaterial = playerColorMaterial;
         savePrices();
         setTextsOnMarket();
 
         updateStocks();
+        setEquipped();
+        doTick();
     }
    
     // Update is called once per frame
@@ -71,39 +74,35 @@ public class MarketEvents : MonoBehaviour {
             {
                 has = readItemsFromFile();
 
-               
+
                 if (!has.listPlayer.Contains(clicked.GetComponentInChildren<SpriteRenderer>().sharedMaterial.name))
                     buyItem();
                 else
-                    ballShow.GetComponent<SpriteRenderer>().material = Resources.Load<Material>("PlayerMaterials/" + clicked.GetComponentInChildren<SpriteRenderer>().sharedMaterial.name);
+                {
+                    wearSave();
+                   
+                }
             }
             else if (clicked.name == "LifePowerUps" || clicked.name == "ShieldPowerUps" || clicked.name == "MagnetPowerUps")
                 buyPowerUp();
             
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
     }
-    public void showLeaderBoards()
+    public void wearSave()
     {
-        GooglePlayScript.ShowLeaderBoardUI();
-    }
-    public void loadGame(int index)
-    {
+        ballShow.GetComponent<SpriteRenderer>().material = Resources.Load<Material>("PlayerMaterials/" + clicked.GetComponentInChildren<SpriteRenderer>().sharedMaterial.name);
         equipThem();
-        SceneManager.LoadScene(index);
+        doTick();
 
-    }
-    public void buyCoin()
-    {
-        ballShow.SetActive(false);
-        marketPanel.SetActive(false);
-        buyCoinPanel.SetActive(true);
     }
 
 
     public void equipThem()
     {
         
-        int totalCoin = PlayerPrefs.GetInt("totalCoin");
+
        
           
             SavePlayer saved = new SavePlayer();
@@ -118,10 +117,10 @@ public class MarketEvents : MonoBehaviour {
             }
             string jsonVersion = JsonUtility.ToJson(saved);
             writeDataToFile(jsonVersion);
+            doTick();
 
-        
-      
-        
+
+
 
     }
     public void buyItem()
@@ -137,11 +136,15 @@ public class MarketEvents : MonoBehaviour {
                 temp.Add(clicked.GetComponentInChildren<SpriteRenderer>().sharedMaterial.name);
                 has.listPlayer = temp;
                 PlayerPrefs.SetInt("totalCoin", totalCoin - ballColorPrice);
+                wearSave();
+              
             }
         }
         updateStocks();
         string jsonVersion = JsonUtility.ToJson(has);
             writeItemToFile(jsonVersion);
+        doTick();
+        setEquipped();
     }
    
     public void buyPowerUp()
@@ -182,7 +185,39 @@ public class MarketEvents : MonoBehaviour {
         magnetText.GetComponent<Text>().text = "x" + PlayerPrefs.GetInt("magnetPowerUpCount");
 
         coinText.GetComponent<Text>().text = PlayerPrefs.GetInt("totalCoin") + "";
-
+       
+    }
+    public void doTick()
+    {
+        x = readDataFromFile();
+        foreach (Transform t in contentSlider.transform)
+        {
+          
+            Debug.Log(clicked);
+            bool res = x.color.Equals(findChildTechnique(t.gameObject, "mat").GetComponent<SpriteRenderer>().sharedMaterial.name);
+            if (res)
+            {
+                findChildTechnique(t.gameObject, "ticked").SetActive(true);
+            }
+            else
+            {
+                findChildTechnique(t.gameObject, "ticked").SetActive(false);
+            }
+        }
+       
+       
+    }
+    public void setEquipped()
+    {
+        foreach (Transform t in contentSlider.transform)
+        {
+            has = readItemsFromFile();
+            Debug.Log(clicked);
+            if (has.listPlayer.Contains(findChildTechnique(t.gameObject, "mat").GetComponent<SpriteRenderer>().sharedMaterial.name))
+            {
+                findChildTechnique(t.gameObject, "Untagged").SetActive(false);
+            }
+        }
     }
     public static void firstOpening()
     {
@@ -278,6 +313,20 @@ public class MarketEvents : MonoBehaviour {
     {
         PlayerPrefs.SetInt("canAd", 0);
     }
+
+    public void loadGame(int index)
+    {
+        equipThem();
+        SceneManager.LoadScene(index);
+
+    }
+    public void buyCoin()
+    {
+        ballShow.SetActive(false);
+        marketPanel.SetActive(false);
+        buyCoinPanel.SetActive(true);
+    }
+
 }
 
 

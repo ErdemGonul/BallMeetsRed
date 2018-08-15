@@ -4,9 +4,10 @@ using GoogleMobileAds.Api;
 
 public class AdmobScript : MonoBehaviour
 {
+     RewardBasedVideoAd rewardBasedVideo;
 
     public static AdmobScript instance;
-    private bool alreadyDid = false;
+
     InterstitialAd interstitial;
     // Use this for initialization
     private void Awake()
@@ -14,7 +15,7 @@ public class AdmobScript : MonoBehaviour
         if (instance != null)
         {
             RequestInterstitial();
-            
+            RequestRewardBasedVideo();
         }
         else
         {
@@ -26,12 +27,34 @@ public class AdmobScript : MonoBehaviour
             // Initialize the Google Mobile Ads SDK.
             MobileAds.Initialize(appId);
 
-            //Request Ads
-            // RequestInterstitial();
             RequestInterstitial();
-
+            RequestRewardBasedVideo();
             MakeInstance();
 
+        }
+    }
+    private void RequestRewardBasedVideo()
+    {
+#if UNITY_ANDROID
+        string adUnitId = "ca-app-pub-3004677166037107/4175453854";
+#endif
+
+        // Create an empty ad request.
+        AdRequest request = new AdRequest.Builder().Build();
+        // Load the rewarded video ad with the request.
+        this.rewardBasedVideo = RewardBasedVideoAd.Instance;
+
+        this.rewardBasedVideo.LoadAd(request, adUnitId);
+    }
+
+
+    public void showRewarded()
+    {
+        if (rewardBasedVideo.IsLoaded())
+        {
+            rewardBasedVideo.Show();
+            PlayerPrefs.SetInt("totalCoin", PlayerPrefs.GetInt("totalCoin") + 100);
+            
         }
     }
 
@@ -47,7 +70,7 @@ public class AdmobScript : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-
+    /*
     public static BannerView RequestBanner()
 	{
 
@@ -71,7 +94,7 @@ public class AdmobScript : MonoBehaviour
         else
             return null;
 	}
-    
+    */
 	public void adGive()
     {
         if (PlayerPrefs.GetInt("canAd") == 1)
@@ -107,5 +130,6 @@ public class AdmobScript : MonoBehaviour
 
 
     }
+  
 
 }

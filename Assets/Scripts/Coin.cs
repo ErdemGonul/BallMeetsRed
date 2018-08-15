@@ -15,6 +15,10 @@ public class Coin : MonoBehaviour {
     private void Update()
     {
         if (controller.gameContinue && controller.canMagnet) {
+            if (player == null)
+            {
+                player = GameObject.FindGameObjectWithTag("Players");
+            }
             if (Vector3.Distance(transform.position, player.transform.position) < 5)
                 transform.position = Vector3.MoveTowards(transform.position, player.transform.position, Time.deltaTime * 10);
         }
